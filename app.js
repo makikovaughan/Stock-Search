@@ -111,7 +111,7 @@ const addButton = function () {
 const renderStock = function () {
 
     const stock = $(this).attr("data-name");
-    const queryURL = `https://api.iextrading.com/1.0/stock/${stock}/batch?types=logo`;
+    const queryURL = `https://api.iextrading.com/1.0/stock/${stock}/batch?types=quote,logo,news&last=10`;
 
     // Creates AJAX call for the specific stock button being clicked
     $.ajax({
@@ -120,12 +120,54 @@ const renderStock = function () {
     }).then(function (response) {
 
         console.log(response);
-        console.log("renderStock");
         const logoUrl = response.logo.url;
+        const companyName = response.quote.companyName;
+        const price = response.quote.latestPrice;
+        const news = response.news;
 
-        $("#company-logo").attr("src", logoUrl);
+        //Create a div tag
+        const stockDiv = $(`<div>`).addClass("company-info");
+
+        //Display the company name
+        const company = $(`<h3>Company Name: ${companyName}</h3>`);
+
+        stockDiv.append(company);
+
+        //Display the company logo
+        const companyLogo = $(`<img class="img-fluid mt-5 mb-5" id="company-logo">`).attr("src", logoUrl);
+        stockDiv.append(companyLogo);
+
+        //Dispklay the latest price
+        const priceInfo = $(`<p>Price: ${price} </p>`);
+        stockDiv.append(priceInfo);
+
+        news.forEach(function(e){
+            const headLine = e.headline;
+            const summary = e.summary;
+            const newsUrl = e.url;
+            const newsSource = e.source;
+
+            const news = $(`<p> Headline: ${headLine}</p> 
+            <p>Summary: ${summary}</p>
+            <p>News Source: ${newsSource}</p>`);
+
+            const url = $(`<a>${newsUrl}</a>`).attr("href", newsUrl);
+
+            const hr = $(`<hr>`);
+
+            stockDiv.append(news);
+            stockDiv.append(url);
+            stockDiv.append(hr);
+
+        });
+
+        //Append to the jumbotron
+        $(".jumbotron").prepend(stockDiv);
+
+        //Change the jumbotoron's background color from white to gray.
         $(".jumbotron").removeClass("bg-white");
         $(".jumbotron").addClass("bg-gray");
+
 
     });
 
