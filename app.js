@@ -151,7 +151,7 @@ const renderStock = function () {
             <p>Summary: ${summary}</p>
             <p>News Source: ${newsSource}</p>`);
 
-            const url = $(`<a>${newsUrl}</a>`).attr("href", newsUrl);
+            const url = $(`<a target="_blank">Go to the site</a>`).attr("href", newsUrl);
 
             const hr = $(`<hr>`);
 
