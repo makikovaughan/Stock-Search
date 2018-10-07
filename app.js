@@ -40,7 +40,7 @@ const collectList = function () {
         });
     });
 
-}
+}   
 
 //Check if the button was already created or not.
 const checkButton = function (stock) {
@@ -129,37 +129,52 @@ const renderStock = function () {
         const stockDiv = $(`<div>`).addClass("company-info");
 
         //Display the company name
-        const company = $(`<h3>Company Name: ${companyName}</h3>`);
+        const company = $(`<h3>${companyName}<img src=${logoUrl} class="img-fluid ml-5 mt-5 mb-5" id="company-logo">
+        </h3>`);
 
         stockDiv.append(company);
 
-        //Display the company logo
-        const companyLogo = $(`<img class="img-fluid mt-5 mb-5" id="company-logo">`).attr("src", logoUrl);
-        stockDiv.append(companyLogo);
 
-        //Dispklay the latest price
-        const priceInfo = $(`<p>Price: ${price} </p>`);
-        stockDiv.append(priceInfo);
+        //Create a table
+        const table = $(`<table class="table table-bordered">`);
+
+        const thead = $(`<thead>
+                <tr>
+                    <th width="30%">Price</th>
+                    <th width="70%" >News</th>
+                </tr>
+            </thead>`);
+        
+        const tbody = $(`<tbody>`);
+            
+        const tr = $(`<tr>`);
+
+        const tdPrice = $(`<td valign="top">${price}</td>`);
+
+        let newsTd = $(`<td>`);
 
         news.forEach(function(e){
             const headLine = e.headline;
             const summary = e.summary;
             const newsUrl = e.url;
             const newsSource = e.source;
-
-            const news = $(`<p> Headline: ${headLine}</p> 
-            <p>Summary: ${summary}</p>
-            <p>News Source: ${newsSource}</p>`);
+            newsTd.append(`<p>${headLine} 
+            ${summary}
+            ${newsSource}`);
 
             const url = $(`<a target="_blank">Go to the site</a>`).attr("href", newsUrl);
-
-            const hr = $(`<hr>`);
-
-            stockDiv.append(news);
-            stockDiv.append(url);
-            stockDiv.append(hr);
-
+            newsTd.append(url);
+            newsTd.append(`<hr>`)
         });
+
+        tr.append(tdPrice);
+        tr.append(newsTd);
+
+        tbody.append(tr);
+        stockDiv.append(table);
+        stockDiv.append(thead);
+        stockDiv.append(tbody);
+
 
         //Append to the jumbotron
         $(".jumbotron").prepend(stockDiv);
