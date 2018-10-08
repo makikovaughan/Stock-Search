@@ -38,6 +38,8 @@ const collectList = function () {
         response.forEach(function (e) {
             validationList.push(e.symbol);
         });
+    }).catch(function(){
+        alert("Could not retrieve the information. Please try again later.")
     });
 
 }   
@@ -132,12 +134,14 @@ const renderStock = function () {
         const company = $(`<h3>${companyName}<img src=${logoUrl} class="img-fluid ml-5 mt-5 mb-5" id="company-logo">
         </h3>`);
 
+        //Appengin the company information to <div>
         stockDiv.append(company);
 
 
-        //Create a table
+        //Creating <table>
         const table = $(`<table class="table table-bordered">`);
 
+        //Creating a <thead>
         const thead = $(`<thead>
                 <tr>
                     <th width = "30%">Price</th>
@@ -145,37 +149,50 @@ const renderStock = function () {
                 </tr>
             </thead>`);
         
+        //Creating a <tbody>
         const tbody = $(`<tbody>`);
-            
+        
+        //Creating <tr>
         const tr = $(`<tr>`);
 
+        //Creating <td> containing a price value
         const tdPrice = $(`<td valign="top">${price}</td>`);
 
+        //Creating <td> to input the news
         let newsTd = $(`<td>`);
 
+        //Creating data inside <td>
         news.forEach(function(e){
             const headLine = e.headline;
             const summary = e.summary;
             const newsUrl = e.url;
             const newsSource = e.source;
-            newsTd.append(`<p>${headLine} 
-            ${summary}
-            ${newsSource}`);
+            newsTd.append(`<h5>${headLine}</h5> <br>`); 
+            newsTd.append(`<p>${summary}</p>`);
+            newsTd.append(`<p>Source: ${newsSource}</p>`);
 
-            const url = $(`<a target="_blank">Go to the site</a>`).attr("href", newsUrl);
+            const url = $(`<a target="_blank">Read more</a>`).attr("href", newsUrl);
             newsTd.append(url);
             newsTd.append(`<hr>`)
         });
 
+        //Appending the <td> content to <tr>
         tr.append(tdPrice);
         tr.append(newsTd);
 
+        //<tbody> is appending <tr>
         tbody.append(tr);
+
+        //<div> is appending <table>
         stockDiv.append(table);
+
+        //<thead> is appending after <table>
         stockDiv.append(thead);
+
+        //<tbody> was appended after <table>
         stockDiv.append(tbody);
 
-
+        //<div> was appeded to jumbotron
         //Append to the jumbotron
         $(".jumbotron").prepend(stockDiv);
 
@@ -184,9 +201,15 @@ const renderStock = function () {
         $(".jumbotron").addClass("bg-gray");
 
 
+    }).catch(function(){
+        alert("Could not retrieve the information. Please try again later.");
     });
 
 
+}
+
+const clearButton = function(){
+    $(".jumbotron").empty();
 }
 
 //When Add a stock button was clicked, adds a stock symbol button when clicked
@@ -194,6 +217,8 @@ $("#stockButton").click(addButton);
 
 //When the stock symbol button was clicked, the information displays
 $("#renderButton").on("click", ".stock", renderStock);
+
+$("#clearButton").click(clearButton);
 
 //Calling collectList to create a list of all stock symbols(validationList)
 collectList();
