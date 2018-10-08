@@ -1,18 +1,18 @@
 # Stock-Search
 
 
-##Descrription
-------------
+## Descrription
+
 This program allows to create a stock symbol button and provide its stock inforamtion
 by clicking its stock symbol button.
 
-API
-----
+## API
+
 Using iexTrading API.
 ([iexTrading API](https://iextrading.com/developer/docs/#stocks))
 
-Structure of files
-------------------
+## Structure of files 
+
 * index.html: Framework HTML
 * app.js: Javascript file
 * ./assets/css/style.css: CSS file
