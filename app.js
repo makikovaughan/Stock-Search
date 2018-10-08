@@ -140,8 +140,8 @@ const renderStock = function () {
 
         const thead = $(`<thead>
                 <tr>
-                    <th width="30%">Price</th>
-                    <th width="70%" >News</th>
+                    <th width = "30%">Price</th>
+                    <th width = "70%">News</th>
                 </tr>
             </thead>`);
         
