@@ -113,7 +113,7 @@ const addButton = function () {
 const renderStock = function () {
 
     const stock = $(this).attr("data-name");
-    const queryURL = `https://api.iextrading.com/1.0/stock/${stock}/batch?types=quote,logo,news&last=10`;
+    const queryURL = `https://api.iextrading.com/1.0/stock/${stock}/batch?types=quote,logo,news,company&last=10`;
 
     // Creates AJAX call for the specific stock button being clicked
     $.ajax({
@@ -126,20 +126,38 @@ const renderStock = function () {
         const companyName = response.quote.companyName;
         const price = response.quote.latestPrice;
         const news = response.news;
+        const ceo = response.company.CEO;
+
+        const row = $(`<div class="row">`);
+        const column = $(`<div class="col-12 col-md-5 mt-3">`);
+        const column2 = $(`<div class="col-12 col-md-5">`);
 
         //Create a div tag
         const stockDiv = $(`<div>`).addClass("company-info");
+        const stockCompany = $(`<div>`).addClass("company-name");
 
         //Display the company name
-        const company = $(`<h3>${companyName}<img src=${logoUrl} class="img-fluid ml-5 mt-5 mb-5" id="company-logo">
-        </h3>`);
+        const company = `<h3>${companyName}</h3>`;
+
+        const ceoName = `<h5>CEO: ${ceo}</h5>`;
+
+        const img = `<img src=${logoUrl} class="img-fluid ml-5 mt-3 mb-5" id="company-logo">`;
+
+        column2.append(img);
 
         //Appengin the company information to <div>
-        stockDiv.append(company);
+        stockCompany.append(company);
+        stockCompany.append(ceoName);
+
+        column.append(stockCompany);
+        row.append(column);
+        row.append(column2);
+
+        stockDiv.append(row);
 
 
         //Creating <table>
-        const table = $(`<table class="table table-bordered">`);
+        const table = $(`<table class="table table-borderless">`);
 
         //Creating a <thead>
         const thead = $(`<thead>
@@ -183,14 +201,15 @@ const renderStock = function () {
         //<tbody> is appending <tr>
         tbody.append(tr);
 
+                //<thead> is appending after <table>
+                table.append(thead);
+
+                //<tbody> was appended after <table>
+                table.append(tbody);
+
+
         //<div> is appending <table>
         stockDiv.append(table);
-
-        //<thead> is appending after <table>
-        stockDiv.append(thead);
-
-        //<tbody> was appended after <table>
-        stockDiv.append(tbody);
 
         //<div> was appeded to jumbotron
         //Append to the jumbotron
