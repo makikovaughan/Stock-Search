@@ -132,7 +132,7 @@ const renderStock = function () {
         const row = $(`<div class="row">`);
 
         //create a left column in Jumbotron
-        const column = $(`<div class="col-12 col-md-5 mt-3">`);
+        const column = $(`<div class="col-12 col-md-7 mt-3">`);
 
         //Create a right column in Jumbotron
         const column2 = $(`<div class="col-12 col-md-5">`);
