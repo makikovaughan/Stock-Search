@@ -1,7 +1,7 @@
 # Stock-Search
 
 
-## Descrription
+## Description
 
 This program allows to create a stock symbol button and provide its stock inforamtion
 by clicking its stock symbol button.
