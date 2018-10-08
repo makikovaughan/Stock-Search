@@ -128,31 +128,45 @@ const renderStock = function () {
         const news = response.news;
         const ceo = response.company.CEO;
 
+        //Create a row
         const row = $(`<div class="row">`);
+
+        //create a left column in Jumbotron
         const column = $(`<div class="col-12 col-md-5 mt-3">`);
+
+        //Create a right column in Jumbotron
         const column2 = $(`<div class="col-12 col-md-5">`);
 
         //Create a div tag
         const stockDiv = $(`<div>`).addClass("company-info");
+
+        //<div> for the first row in the jumbotron
         const stockCompany = $(`<div>`).addClass("company-name");
 
         //Display the company name
         const company = `<h3>${companyName}</h3>`;
 
+        //Display the CEO
         const ceoName = `<h5>CEO: ${ceo}</h5>`;
 
+        //Display the company logo
         const img = `<img src=${logoUrl} class="img-fluid ml-5 mt-3 mb-5" id="company-logo">`;
 
+        //Append to the right column in Jumbotron
         column2.append(img);
 
         //Appengin the company information to <div>
         stockCompany.append(company);
         stockCompany.append(ceoName);
 
+        //Append the company information to the left column of first row in Jumbotoron
         column.append(stockCompany);
+
+        //Appen to the first row
         row.append(column);
         row.append(column2);
 
+        //Append to the stockDiv
         stockDiv.append(row);
 
 
