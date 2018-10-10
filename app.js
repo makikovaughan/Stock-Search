@@ -110,6 +110,115 @@ const addButton = function (event) {
     }
 }
 
+//Create row and column to display the company information
+
+const createCompanyInfo = function(logoUrl, companyName, ceo, industry) {
+
+    //Create a row
+    const row = $("<div>").addClass("row");
+
+    //create a left column in Jumbotron
+    const column = $("<div>").addClass("col-12 col-md-7 mt-3");
+
+    //Create a right column in Jumbotron
+    const column2 = $("<div>").addClass("col-12 col-md-5");
+
+    //<div> for the first row in the jumbotron
+    const stockCompany = $("<div>").addClass("company-name");
+
+    //Display the company name
+    const company = $("<h3>").text(companyName);
+
+    //Display the CEO
+    const ceoName = $("<h5>").text(`CEO: ${ceo}`);
+
+    //Display industry
+    const indName = $("<h5>").text(`Industry: ${industry}`);
+
+    //Display the company logo
+    const img = $("<img>").addClass("img-fluid ml-5 mt-3 mb-5");
+    img.attr("id", "company-logo");
+    img.attr("src", logoUrl);
+    //Append to the right column in Jumbotron
+    column2.append(img);
+
+    //Appengin the company information to <div>
+    stockCompany.append(company);
+    stockCompany.append(ceoName);
+    stockCompany.append(indName);
+
+    //Append the company information to the left column of first row in Jumbotoron
+    column.append(stockCompany);
+
+    //Appen to the first row
+    row.append(column);
+    row.append(column2);
+
+    //Return a row cotaining two columns
+    return row;
+}
+
+//Create a <tbody>
+const createTbody = function (thead, table, price, news) {
+
+    //Creating a <tbody>
+    const tbody = $("<tbody>");
+
+    //Creating <tr>
+    const tr = $("<tr>");
+
+    //Creating <td> containing a price value
+    const tdPrice = $("<td>").attr("valign", "top");
+    tdPrice.text(price);
+
+    //Creating <td> to input the news
+    let newsTd = $("<td>");
+
+    //Creating data inside <td> for news
+    news.forEach(function (e) {
+
+        //Get the news information from ajax response
+        const headLine = e.headline;
+        const summary = e.summary;
+        const newsUrl = e.url;
+        const newsSource = e.source;
+
+        //Add all inforamtion to <td>
+        headLineTag = $("<h5>").text(headLine);
+        summaryTag = $("<p>").text(summary);
+        sourceTag = $("<p>").text(`Source: ${newsSource}`);
+        newsTd.append(headLineTag);
+        newsTd.append(summaryTag);
+        newsTd.append(sourceTag);
+
+        //Create <a> tag to read more for this story and open a new window.
+        const url = $("<a>").attr("target", "_blank")
+        url.text("Read more").attr("href", newsUrl);
+
+        //Add the url to <td>
+        newsTd.append(url);
+
+        //Make a line to seperate from another story
+        newsTd.append(`<hr>`);
+    });
+
+    //Appending the <td> content to <tr>
+    tr.append(tdPrice);
+    tr.append(newsTd);
+
+    //<tbody> is appending <tr>
+    tbody.append(tr);
+
+    //<thead> is appending after <table>
+    table.append(thead);
+
+    //<tbody> was appended after <table>
+    table.append(tbody);
+
+    return table;
+
+}
+
 const renderStock = function () {
 
     const stock = $(this).attr("data-name");
@@ -128,52 +237,15 @@ const renderStock = function () {
         const news = response.news;
         const ceo = response.company.CEO;
         const industry = response.company.industry;
-
-        //Create a row
-        const row = $("<div>").addClass("row");
-
-        //create a left column in Jumbotron
-        const column = $("<div>").addClass("col-12 col-md-7 mt-3");
-
-        //Create a right column in Jumbotron
-        const column2 = $("<div>").addClass("col-12 col-md-5");
-
+        
         //Create a div tag
         const stockDiv = $("<div>").addClass("company-info");
 
-        //<div> for the first row in the jumbotron
-        const stockCompany = $("<div>").addClass("company-name");
-
-        //Display the company name
-        const company = $("<h3>").text(companyName);
-
-        //Display the CEO
-        const ceoName = $("<h5>").text(`CEO: ${ceo}`);
-
-        //Display industry
-        const indName = $("<h5>").text(`Industry: ${industry}`);
-
-        //Display the company logo
-        const img = $("<img>").addClass("img-fluid ml-5 mt-3 mb-5");
-        img.attr("id", "company-logo");
-        img.attr("src", logoUrl);
-        //Append to the right column in Jumbotron
-        column2.append(img);
-
-        //Appengin the company information to <div>
-        stockCompany.append(company);
-        stockCompany.append(ceoName);
-        stockCompany.append(indName);
-
-        //Append the company information to the left column of first row in Jumbotoron
-        column.append(stockCompany);
-
-        //Appen to the first row
-        row.append(column);
-        row.append(column2);
+        //Create row and column for the company information
+        const rowTag = createCompanyInfo(logoUrl, companyName, ceo, industry);
 
         //Append to the stockDiv
-        stockDiv.append(row);
+        stockDiv.append(rowTag);
 
 
         //Creating <table>
@@ -187,63 +259,11 @@ const renderStock = function () {
                 </tr>
             </thead>`);
 
-        //Creating a <tbody>
-        const tbody = $("<tbody>");
-
-        //Creating <tr>
-        const tr = $("<tr>");
-
-        //Creating <td> containing a price value
-        const tdPrice = $("<td>").attr("valign", "top");
-        tdPrice.text(price);
-
-        //Creating <td> to input the news
-        let newsTd = $("<td>");
-
-        //Creating data inside <td> for news
-        news.forEach(function (e) {
-
-            //Get the news information from ajax response
-            const headLine = e.headline;
-            const summary = e.summary;
-            const newsUrl = e.url;
-            const newsSource = e.source;
-
-            //Add all inforamtion to <td>
-            headLineTag = $("<h5>").text(headLine);
-            summaryTag = $("<p>").text(summary);
-            sourceTag = $("<p>").text(`Source: ${newsSource}`);
-            newsTd.append(headLineTag);
-            newsTd.append(summaryTag);
-            newsTd.append(sourceTag);
-
-            //Create <a> tag to read more for this story and open a new window.
-            const url = $("<a>").attr("target", "_blank")
-            url.text("Read more").attr("href", newsUrl);
-
-            //Add the url to <td>
-            newsTd.append(url);
-
-            //Make a line to seperate from another story
-            newsTd.append(`<hr>`);
-        });
-
-        //Appending the <td> content to <tr>
-        tr.append(tdPrice);
-        tr.append(newsTd);
-
-        //<tbody> is appending <tr>
-        tbody.append(tr);
-
-        //<thead> is appending after <table>
-        table.append(thead);
-
-        //<tbody> was appended after <table>
-        table.append(tbody);
-
+        //Create <tbody> and append <thead> and <tbody>
+        const table1 = createTbody(thead, table, price, news);
 
         //<div> is appending <table>
-        stockDiv.append(table);
+        stockDiv.append(table1);
 
         //<div> was appeded to jumbotron
         //Append to the jumbotron
