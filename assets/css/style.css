@@ -1,8 +1,17 @@
 p {
-    font-size: 15px;
+    font-size: 15px!important;
+    font-family: Arial, Helvetica, sans-serif!important;
+}
+
+a {
+    font-size: 14px!important;
 }
 
 hr {
     size: 3!important;
     color: gray!important;
+}
+
+h7 {
+    color: red!important;
 }

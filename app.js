@@ -1,6 +1,6 @@
-const stocksList = ["TM", "HMC", "DAL", "F"];
+let stocksList = ["TM", "HMC", "DAL", "F"];
 const validationList = [];
-
+let favoriteList = [];
 
 // Function for displaying stock data
 const renderButton = function () {
@@ -9,7 +9,7 @@ const renderButton = function () {
     // (this is necessary otherwise you will have repeat buttons)
     $('#renderButton').empty();
     // Loops through the array of stocks
-    for (let i = 0; i < stocksList.length; i++) {
+    stocksList.forEach(function (e) {
 
         // Then dynamicaly generates buttons for each stock in the array
         // This code $("<button>") is all jQuery needs to create the beginning and end tag. (<button></button>)
@@ -17,12 +17,13 @@ const renderButton = function () {
         // Adds a class of stock to our button
         newButton.addClass("stock btn btn-outline-success mr-3 mt-3");
         // Added a data-attribute
-        newButton.attr("data-name", stocksList[i]);
+        newButton.attr("data-name", e);
         // Provided the initial button text
-        newButton.text(stocksList[i]);
+        newButton.text(e);
         // Added the button to the buttons-view div
         $('#renderButton').append(newButton);
-    }
+    });
+
 }
 
 //Creates the list of all stock symbols
@@ -110,9 +111,24 @@ const addButton = function (event) {
     }
 }
 
+//Create a favorite button
+const renderFavorite = function () {
+
+    const symbol = $(".checkbox").val();
+
+    favoriteList.push(symbol);
+
+}
+
 //Create row and column to display the company information
 
-const createCompanyInfo = function(logoUrl, companyName, ceo, industry) {
+const createCompanyInfo = function (response) {
+
+    const logoUrl = response.logo.url;
+    const companyName = response.quote.companyName;
+    const ceo = response.company.CEO;
+    const industry = response.company.industry;
+    const symbol = response.quote.symbol;
 
     //Create a row
     const row = $("<div>").addClass("row");
@@ -121,7 +137,9 @@ const createCompanyInfo = function(logoUrl, companyName, ceo, industry) {
     const column = $("<div>").addClass("col-12 col-md-7 mt-3");
 
     //Create a right column in Jumbotron
-    const column2 = $("<div>").addClass("col-12 col-md-5");
+    const column2 = $("<div>").addClass("col-11 col-md-4");
+
+    const column3 = $("<div>").addClass("col-1 col-md-1 mt-5");
 
     //<div> for the first row in the jumbotron
     const stockCompany = $("<div>").addClass("company-name");
@@ -150,16 +168,75 @@ const createCompanyInfo = function(logoUrl, companyName, ceo, industry) {
     //Append the company information to the left column of first row in Jumbotoron
     column.append(stockCompany);
 
+
+    const favoriteButton = $("<input>").addClass("checkbox").attr("type", "checkbox");
+    favoriteButton.attr("value", symbol);
+    favoriteButton.attr("onclick", `renderFavorite()`);
+
+
+    const favorite = $("<h7>").text("Favorite");
+
+    column3.append(favorite);
+    column3.append(favoriteButton);
+
     //Appen to the first row
     row.append(column);
     row.append(column2);
+    row.append(column3);
 
     //Return a row cotaining two columns
     return row;
 }
 
+//Get more news from Newsapi.org
+const getMoreNews = function (companyName, cb) {
+
+    const apiKey = `1c7ba50f1b0b47559556bf164613a54e`;
+    const apiUrl = `https://newsapi.org/v2/everything?q=${companyName}&apiKey=${apiKey}&pageSize=3`;
+
+    $.ajax({
+        url: apiUrl,
+        method: 'GET'
+    }).then(function (response) {
+
+        const news = response.articles;
+
+        //Creating data inside <td> for news
+        news.forEach(function (e) {
+
+            //Get the news information from ajax response
+            const headLine = e.title;
+            const summary = e.description;
+            const newsUrl = e.url;
+            const newsSource = e.source.name;
+
+            //Add all inforamtion for <td>
+            let anotherTd = $("<p>")
+            const headLineTag = $("<h5>").text(headLine);
+            summaryTag = $("<p>").text(summary);
+            sourceTag = $("<p>").text(`Source: ${newsSource}`);
+            anotherTd.append(headLineTag);
+            anotherTd.append(summaryTag);
+            anotherTd.append(sourceTag);
+
+            //Create <a> tag to read more for this story and open a new window.
+            const url = $("<a>").attr("target", "_blank")
+            url.text("Read more").attr("href", newsUrl);
+
+            //Add the url to <td>
+            anotherTd.append(url);
+
+            //Make a line to seperate from another story
+            anotherTd.append(`<hr>`);
+
+            cb(anotherTd);
+        });
+
+    });
+}
+
 //Create a <tbody>
-const createTbody = function (thead, table, price, news) {
+const createTbody = function (thead, table, price, news, name) {
 
     //Creating a <tbody>
     const tbody = $("<tbody>");
@@ -202,12 +279,24 @@ const createTbody = function (thead, table, price, news) {
         newsTd.append(`<hr>`);
     });
 
+
     //Appending the <td> content to <tr>
     tr.append(tdPrice);
+
+    //For another set of news from newsapi.org
+    let td2;
+
+    //Call the funcgtion to get the information
+    getMoreNews(name, function(td2){
+        newsTd.append(td2);
+    });
+
+    // tr.append td for news;
     tr.append(newsTd);
 
     //<tbody> is appending <tr>
     tbody.append(tr);
+
 
     //<thead> is appending after <table>
     table.append(thead);
@@ -219,6 +308,8 @@ const createTbody = function (thead, table, price, news) {
 
 }
 
+
+//Display the stock information on Jumbotron screen
 const renderStock = function () {
 
     const stock = $(this).attr("data-name");
@@ -230,19 +321,14 @@ const renderStock = function () {
         method: 'GET'
     }).then(function (response) {
 
-        console.log(response);
-        const logoUrl = response.logo.url;
-        const companyName = response.quote.companyName;
         const price = response.quote.latestPrice;
         const news = response.news;
-        const ceo = response.company.CEO;
-        const industry = response.company.industry;
-        
+
         //Create a div tag
         const stockDiv = $("<div>").addClass("company-info");
 
         //Create row and column for the company information
-        const rowTag = createCompanyInfo(logoUrl, companyName, ceo, industry);
+        const rowTag = createCompanyInfo(response);
 
         //Append to the stockDiv
         stockDiv.append(rowTag);
@@ -260,7 +346,7 @@ const renderStock = function () {
             </thead>`);
 
         //Create <tbody> and append <thead> and <tbody>
-        const table1 = createTbody(thead, table, price, news);
+        const table1 = createTbody(thead, table, price, news, response.quote.companyName);
 
         //<div> is appending <table>
         stockDiv.append(table1);
@@ -282,8 +368,34 @@ const renderStock = function () {
 }
 
 //Clear the button
-const clearButton = function () {
+const clearButton = function (e) {
+
+    //Avoid reset
+    e.preventDefault();
+
+    //Clear jumbotron screen
     $(".jumbotron").empty();
+    $(".jumbotron").removeClass("bg-gray");
+    $(".jumbotron").addClass("bg-white");
+
+    //Clear stock button
+    stocksList = ["TM", "HMC", "DAL", "F"];
+
+    //Add favorite list to the default stock button
+    for (let i = 0; i < favoriteList.length; i++) {
+
+        if (!stocksList.includes(favoriteList[i])) {
+            stocksList.push(favoriteList[i]);
+        }
+
+    }
+
+    //Clear favorite button
+    favoriteList = [];
+
+    //Display the stock button
+    renderButton();
+
 }
 
 //When Add a stock button was clicked, adds a stock symbol button when clicked

@@ -27,7 +27,7 @@ Using iexTrading API.
 
 2. Type a stock symbol name and click on "Add a stock symbol" button.
 
-3. If the stock symbol does not exist, it will receive an alert.
+3. If the stock symbol is blank or incorrect, then an alert will be popped up.
 
 ![errorStockSymbol](./assets/images/AlertScreen1.png)
 
@@ -35,9 +35,31 @@ Using iexTrading API.
 
 ![buttonScreen](./assets/images/buttonScreen.png)
 
-5. Click on the stock information you want, and then it will diplay the information.
+5. Click on the stock button for the information you want, and then it will diplay the information.
 
 ![renderScreen](./assets/images/renderScreen.png)
+
+6. If you want to keep the stock button you created after resetting by clear button, then check on the favorite checkmark button.
+
+![checkBox](./assets/images/checkButton.png)
+
+7. After clicking Clear button, MSFT
+button stays on the screen.
+
+![clearButton](./assets/images/clearButton.png)
+
+### Note
+You can access this site from:
+https://makikovaughan.github.io/Responsive-Portfolio/portfolio.html
+Portfolio1 icon.
+
+![responsive](./assets/images/responsive.png)
+
+or
+
+https://makikovaughan.github.io/Bootstrap-Portfolio/portfolio.html
+
+![bootstrap](./assets/images/bootstrap.png)
 
 ## Author
 Makiko Vaughan
