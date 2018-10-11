@@ -139,7 +139,7 @@ const createCompanyInfo = function (response) {
     //Create a right column in Jumbotron
     const column2 = $("<div>").addClass("col-11 col-md-4");
 
-    const column3 = $("<div>").addClass("col-1 col-md-1 mt-5");
+    const column3 = $("<div>").addClass("col-12 col-md-1 mt-5 pr-5");
 
     //<div> for the first row in the jumbotron
     const stockCompany = $("<div>").addClass("company-name");
@@ -154,7 +154,7 @@ const createCompanyInfo = function (response) {
     const indName = $("<h5>").text(`Industry: ${industry}`);
 
     //Display the company logo
-    const img = $("<img>").addClass("img-fluid ml-5 mt-3 mb-5");
+    const img = $("<img>").addClass("img-fluid mr-3 mt-3 mb-5");
     img.attr("id", "company-logo");
     img.attr("src", logoUrl);
     //Append to the right column in Jumbotron
@@ -175,6 +175,7 @@ const createCompanyInfo = function (response) {
 
 
     const favorite = $("<h7>").text("Favorite");
+    favorite.append("<br>");
 
     column3.append(favorite);
     column3.append(favoriteButton);
