@@ -1,0 +1,4 @@
+const config = {
+  MY_API_TOKEN: `pk_b5418755850f4d1e941122fee5241ba6`,
+  NEWSAPI_TOKEN: `1c7ba50f1b0b47559556bf164613a54e`,
+};
