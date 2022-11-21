@@ -1,6 +1,5 @@
 # Stock-Search
 
-
 ## Description
 
 This program allows to create a stock symbol button and provide its stock inforamtion
@@ -9,18 +8,18 @@ by clicking its stock symbol button.
 ## API
 
 Using iexTrading API.
-([iexTrading API](https://iextrading.com/developer/docs/#stocks))
+([iexTrading API](https://iexcloud.io/docs/api/#query-parameters))
+###note: API key works temporarily for a month.
 
-## Structure of files 
+## Structure of files
 
-* index.html: Framework HTML
-* app.js: Javascript file
-* ./assets/css/style.css: CSS file
-* ./assets/css/images: Images files for readme.
+- index.html: Framework HTML
+- app.js: Javascript file
+- ./assets/css/style.css: CSS file
+- ./assets/css/images: Images files for readme.
 
+## **_How to use_**
 
-***How to use***
------------
 1. Go to this URL to access this program ([Stock-Search](https://makikovaughan.github.io/Stock-Search/))
 
 ![main](./assets/images/Main.png)
@@ -44,22 +43,23 @@ Using iexTrading API.
 ![checkBox](./assets/images/checkButton.png)
 
 7. After clicking Clear button, MSFT
-button stays on the screen.
+   button stays on the screen.
 
 ![clearButton](./assets/images/clearButton.png)
 
 ### Note
-You can access this site from:
-https://makikovaughan.github.io/Responsive-Portfolio/portfolio.html
-Portfolio1 icon.
 
-![responsive](./assets/images/responsive.png)
+You can access this site from:
+https://makikovaughan.github.io/myPortfolio/index.html
+
+![responsive](./assets/images/myPortfolio1.png)
 
 or
 
-https://makikovaughan.github.io/Bootstrap-Portfolio/portfolio.html
+https://makikovaughan.github.io/myPortfolio/gallery.html
 
-![bootstrap](./assets/images/bootstrap.png)
+![bootstrap](./assets/images/myPortfolio2.png)
 
 ## Author
+
 Makiko Vaughan
