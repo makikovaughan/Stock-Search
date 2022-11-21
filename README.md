@@ -9,7 +9,8 @@ by clicking its stock symbol button.
 
 Using iexTrading API.
 ([iexTrading API](https://iexcloud.io/docs/api/#query-parameters))
-###note: API key works temporarily for a month.
+
+### note: API key works temporarily for a month.
 
 ## Structure of files
 
